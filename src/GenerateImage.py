@@ -40,7 +40,6 @@ class GenerateImage:
         return data['uuid']
 
     def check_generation(self, request_id, attempts=10, delay=10):
-        print('Получаем результат генерации')
         max_attempts = attempts
         while attempts > 0:
             response = requests.get(self.URL + 'key/api/v1/text2image/status/' + request_id, headers=self.AUTH_HEADERS)

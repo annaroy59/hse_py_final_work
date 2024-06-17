@@ -6,6 +6,7 @@ import os
 from PIL import Image
 
 
+# Получение переменных окружения
 def get_env_var(variable):
     env_res = os.getenv(variable)
     if env_res is None:
@@ -14,6 +15,7 @@ def get_env_var(variable):
     return env_res
 
 
+# Получение температуры в желаемом городе
 def get_temp(city_name):
     weather_appid = get_env_var('weather_appid')
     res = requests.get("http://api.openweathermap.org/data/2.5/find",
@@ -23,20 +25,21 @@ def get_temp(city_name):
         print(f'Не удалось получить температуру по городу {city}')
         exit(0)
     res_temp = round(data['list'][0]['main']['temp'])
-    print(f'В городе {city_name} сейчас {res_temp} градусов Цельсия')
+    print(f'В городе {city_name} сейчас {res_temp} гр. Цельсия')
     return res_temp
 
 
+# Генерация изображения
 def create_pic(str_action):
     pic_apikey = get_env_var('pic_apikey')
     pic_secretkey = get_env_var('pic_secretkey')
 
     api = GenerateImage('https://api-key.fusionbrain.ai/', pic_apikey, pic_secretkey)
     uuid = api.generate(str_action)
-    images = api.check_generation(uuid)
+    images = api.check_generation(uuid, 20, 15)
 
     if images is None:
-        print('Не удалось сгенерировать изображение')
+        print(f'Не удалось сгенерировать изображение, uuid = {uuid} ')
         exit()
 
     image_base64 = images[0]
@@ -48,6 +51,7 @@ def create_pic(str_action):
     return res_file_name
 
 
+# Получение текущего времени года
 def get_season():
     season = {12: "зимой", 1: "зимой", 2: "зимой",
               3: "весной", 4: "весной", 5: "весной",
@@ -62,7 +66,7 @@ city = input('Введите город: ')
 temp = get_temp(city)
 pet = input('Введите животное: ')
 
-action = f'{pet} гуляет в городе {city} при {temp} градусах Цельсия в национальном костюме {get_season()}'
+action = f'{pet} гуляет {get_season()} в городе {city} при {temp} гр. Цельсия в национальном костюме города'
 print(action)
 
 file_name = create_pic(action)

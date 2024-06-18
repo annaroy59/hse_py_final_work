@@ -22,12 +22,13 @@ class GenerateImage:
         if model is None:
             model = self.get_model()
         params = {
-            "type": "GENERATE",
-            "numImages": images,
-            "width": width,
-            "height": height,
-            "generateParams": {
-                "query": f"{prompt}"
+            'style': 'ANIME',
+            'type': 'GENERATE',
+            'numImages': images,
+            'width': width,
+            'height': height,
+            'generateParams': {
+                'query': f'{prompt}'
             }
         }
 

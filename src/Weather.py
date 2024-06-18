@@ -18,12 +18,12 @@ def get_env_var(variable):
 # Получение температуры в желаемом городе
 def get_temp(city_name):
     weather_appid = get_env_var('weather_appid')
-    res = requests.get("http://api.openweathermap.org/data/2.5/find",
+    res = requests.get('http://api.openweathermap.org/data/2.5/find',
                        params={'q': city, 'units': 'metric', 'APPID': weather_appid})
     data = res.json()
     if data['count'] == 0:
         print(f'Не удалось получить температуру по городу {city}')
-        exit(0)
+        exit()
     res_temp = round(data['list'][0]['main']['temp'])
     print(f'В городе {city_name} сейчас {res_temp} гр. Цельсия')
     return res_temp
@@ -39,24 +39,24 @@ def create_pic(str_action):
     images = api.check_generation(uuid, 20, 15)
 
     if images is None:
-        print(f'Не удалось сгенерировать изображение, uuid = {uuid} ')
+        print(f'Не удалось сгенерировать изображение, uuid = {uuid}')
         exit()
 
     image_base64 = images[0]
     image_data = base64.b64decode(image_base64)
-    res_file_name = f"{os.getcwd()}/pics/{datetime.now().strftime('%Y%m%d_%H%M%S')}_{pet}_{city}_{temp}.jpg"
+    res_file_name = f'{os.getcwd()}/pics/{datetime.now().strftime('%Y%m%d_%H%M%S')}_{pet}_{city}_{temp}.jpg'
 
-    with open(res_file_name, "wb") as file:
+    with open(res_file_name, 'wb') as file:
         file.write(image_data)
     return res_file_name
 
 
 # Получение текущего времени года
 def get_season():
-    season = {12: "зимой", 1: "зимой", 2: "зимой",
-              3: "весной", 4: "весной", 5: "весной",
-              6: "летом", 7: "летом", 8: "летом",
-              9: "осенью", 10: "осенью", 11: "осенью"}
+    season = {12: 'зимой', 1: 'зимой', 2: 'зимой',
+              3: 'весной', 4: 'весной', 5: 'весной',
+              6: 'летом', 7: 'летом', 8: 'летом',
+              9: 'осенью', 10: 'осенью', 11: 'осенью'}
     month = datetime.now().month
     return season[month]
 
